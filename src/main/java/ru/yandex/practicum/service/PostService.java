@@ -2,6 +2,7 @@ package ru.yandex.practicum.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -33,9 +34,9 @@ import java.util.UUID;
 @Slf4j
 public class PostService {
     private final CommentService commentService;
+    private final  FileService fileService;
     private final PostRepository postRepository;
     private final PostMapper postMapper;
-    private final String uploadDirectory = "/images";
     private final String regexPattern = "[\\n\\s,./\\\\!@$%^&*()_+=\\-~{}\\[\\]:;\"'<>?|]+";
 
 
@@ -75,7 +76,7 @@ public class PostService {
         // записываем на сервере изображение и сохраняем в пост его url
         if (dto.getImage() != null) {
             try{
-                String urlFile = storeFile(dto.getImage());
+                String urlFile = fileService.storeFile(dto.getImage());
                 newPost.setImageUrl(urlFile);
             } catch (IOException ex) {
                 log.warn(ex.getMessage());
@@ -99,8 +100,11 @@ public class PostService {
         // записываем на сервере изображение и сохраняем в пост его url
         if (dto.getImage() != null) {
             try{
-                //todo реализовать удаление старого файла (может придется переделать сохранение картинки)
-                String urlFile = storeFile(dto.getImage());
+                String urlFile = fileService.storeFile(dto.getImage());
+                // удаление старого файла
+                if (post.getImageUrl() != null && !post.getImageUrl().isEmpty()) {
+                    fileService.deleteFile(post.getImageUrl());
+                }
                 post.setImageUrl(urlFile);
             } catch (IOException ex) {
                 log.warn(ex.getMessage());
@@ -149,45 +153,6 @@ public class PostService {
     }
 
 
-    /**
-     * Сохраняет файл и возвращает URL для доступа к нему.
-     * @param file  Файл для сохранения
-     * @return URL сохраненного файла
-     * @throws IOException  Если произошла ошибка при сохранении файла
-     */
-    public String storeFile(MultipartFile file) throws IOException {
-        String filename = generateUniqueFilename(file.getOriginalFilename());
-        //String baseUrl = ServletUriComponentsBuilder.fromCurrentRequestUri().replacePath(null).build().toUriString();
-        String baseUrl = "/Users/terohovets/Desktop/MAIN/web-blog";
-        Path uploadPath = Paths.get(baseUrl + uploadDirectory);
 
-        // Создаем папку, если она не существует
-        if (!Files.exists(uploadPath)) {
-            Files.createDirectories(uploadPath);
-        }
-        Path filePath = Paths.get(baseUrl + uploadDirectory, filename);
-
-        try (InputStream inputStream = file.getInputStream()) {
-            Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            throw new IOException("Failed to store file " + filename, e);
-        }
-
-        return uploadDirectory + "/" + filename;
-    }
-
-    /**
-     * Генерирует уникальное имя файла.
-     * @param originalFilename  Исходное имя файла
-     * @return Уникальное имя файла
-     */
-    private String generateUniqueFilename(String originalFilename) {
-        String extension = "";
-        int dotIndex = originalFilename.lastIndexOf('.');
-        if (dotIndex > 0) {
-            extension = originalFilename.substring(dotIndex);
-        }
-        return UUID.randomUUID().toString() + extension;
-    }
 
 }
