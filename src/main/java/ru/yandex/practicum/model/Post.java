@@ -18,7 +18,7 @@ import static java.time.LocalDateTime.now;
 @Getter
 @RequiredArgsConstructor
 public class Post {
-    private Long id; // идентификатор поста
+    private Integer id; // идентификатор поста
     private String title; // название поста
     private String imageUrl; // ссылка на картинку
     private String excerpt; // короткое содержание поста
@@ -29,7 +29,7 @@ public class Post {
     private LocalDateTime createdAt; // дата создания
     private LocalDateTime updatedAt; // дата обновления
 
-    public Post(long id, String title, String imageUrl, String excerpt, List<String> tags, int likeCount, LocalDateTime createdAt) {
+    public Post(int id, String title, String imageUrl, String excerpt, List<String> tags, int likeCount, LocalDateTime createdAt) {
         this.id = id;
         this.title = title;
         this.imageUrl = imageUrl;
@@ -39,7 +39,7 @@ public class Post {
         this.createdAt = createdAt;
     }
 
-    public Post(long id, String title, String imageUrl, String excerpt, String content, List<String> tags, int likeCount) {
+    public Post(int id, String title, String imageUrl, String excerpt, String content, List<String> tags, int likeCount) {
         this.id = id;
         this.title = title;
         this.imageUrl = imageUrl;

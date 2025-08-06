@@ -19,7 +19,7 @@ public class PostMapper {
         }
         Post post = new Post();
         post.setTitle(dto.getTitle());
-        String excerpt = dto.getContent() != null ? dto.getContent() : "";
+        String excerpt = dto.getContent() != null ? dto.getContent().split("\n")[0] : "";
         post.setExcerpt(excerpt.length() > 256 ? excerpt.substring(0, 255) : excerpt);
         post.setContent(dto.getContent());
         return post;
@@ -62,7 +62,7 @@ public class PostMapper {
                 .tags(post.getTags())
                 .build();
     }
-    public List<SimplePostDTO> toSimpleDto(List<Post> posts, Map<Long, Integer> mapCommentCount) {
+    public List<SimplePostDTO> toSimpleDto(List<Post> posts, Map<Integer, Integer> mapCommentCount) {
         return posts.stream().map(it -> toSimpleDto(it, mapCommentCount.getOrDefault(it.getId(), 0))).toList();
     }
 

@@ -34,7 +34,7 @@ public class JdbcPostRepositoryImpl implements PostRepository {
                 (rs, rowNum) -> {
                     String tagsJson = rs.getString("tags");
                     return new Post(
-                            rs.getLong("id"),
+                            rs.getInt("id"),
                             rs.getString("title"),
                             rs.getString("image_url"),
                             rs.getString("excerpt"),
@@ -61,7 +61,7 @@ public class JdbcPostRepositoryImpl implements PostRepository {
                 (rs, rowNum) -> {
                     String tagsJson = rs.getString("tags");
                     return new Post(
-                            rs.getLong("id"),
+                            rs.getInt("id"),
                             rs.getString("title"),
                             rs.getString("image_url"),
                             rs.getString("excerpt"),
@@ -96,7 +96,7 @@ public class JdbcPostRepositoryImpl implements PostRepository {
                 String.format(sql, id),
                 rs -> {
                     String tagsJson = rs.getString("tags");
-                    post.setId(rs.getLong("id"));
+                    post.setId(rs.getInt("id"));
                     post.setTitle(rs.getString("title"));
                     post.setImageUrl(rs.getString("image_url"));
                     post.setExcerpt(rs.getString("excerpt"));

@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 public class CommentDTO {
-    private Long id; // идентификатор комментария
+    private Integer id; // идентификатор комментария
     private String content; // текст комментария
     private LocalDateTime createdAt; // дата создания
 

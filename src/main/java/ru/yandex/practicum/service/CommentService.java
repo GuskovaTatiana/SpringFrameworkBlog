@@ -25,12 +25,35 @@ public class CommentService {
     /**
      * Получение полного списка комментариев по посту
      * */
-    public List<CommentDTO> findAllByPostId(Long postId) {
+    public List<CommentDTO> findAllByPostId(Integer postId) {
         List<CommentToPost> comments = commentRepository.findAllByPostId(postId);
         return commentMapper.toDto(comments);
     }
 
-    public Map<Long, Integer> getCountCommentsByPostIds(List<Long> postIds) {
+    /**
+     * Сохранение комментария
+     * */
+    public void save(Integer postId, String commentText) {
+        CommentToPost comments = new CommentToPost(postId, commentText);
+        commentRepository.save(comments);
+    }
+
+    /**
+     * Обновление комментария
+     * */
+    public void update(Integer id, String commentText) {
+
+        commentRepository.update(id, commentText);
+    }
+
+    /**
+     * Удаление комментария
+     * */
+    public void delete(Integer id) {
+        commentRepository.deleteById(id);
+    }
+
+    public Map<Integer, Integer> getCountCommentsByPostIds(List<Integer> postIds) {
         return commentRepository.findCountCommentsByPostIds(postIds);
     }
     ;

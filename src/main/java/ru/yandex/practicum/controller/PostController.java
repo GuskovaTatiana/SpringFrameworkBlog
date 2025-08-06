@@ -31,7 +31,7 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
-    private final CommentService commentService;
+
 
     /**
      * Получение списка постов
@@ -73,7 +73,7 @@ public class PostController {
     /**
      * Сохранение нового поста
      * */
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String createPost(@ModelAttribute CreatePostDTO createRequest) {
         if (createRequest.getTitle() != null) {
             postService.save(createRequest);
@@ -121,24 +121,4 @@ public class PostController {
         postService.setLikePostById(id, like);
         return "redirect:/posts/{id}"; // открываем страницу по созданию поста
     }
-
-    /**
-     * Сохранение комментария к посту
-     * //может перенести в отдельный констроллер???
-     * */
-    @PostMapping("{id}/comments")
-    public String createComment(@PathVariable int id,
-                                @RequestParam()  Boolean commentText) {
-        if (commentText != null) {
-            //todo реализовать сохранение комментария
-           // commentService.save(createRequest);
-
-        }
-        return "redirect:/posts";
-    }
-
-
-
-
-
 }

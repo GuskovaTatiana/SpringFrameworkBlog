@@ -15,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @AllArgsConstructor
 public class SimplePostDTO {
-    private Long id; // идентификатор поста
+    private Integer id; // идентификатор поста
     private String title; // название поста
     private String imageUrl; // путь к картинке
     private String excerpt; // короткое содержание поста

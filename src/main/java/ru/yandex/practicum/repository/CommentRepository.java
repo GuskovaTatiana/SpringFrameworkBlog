@@ -7,12 +7,12 @@ import java.util.List;
 import java.util.Map;
 
 public interface CommentRepository {
-    List<CommentToPost> findAllByPostId(Long postId);
+    List<CommentToPost> findAllByPostId(Integer postId);
 
-    Map<Long, Integer> findCountCommentsByPostIds(List<Long> postIds);
+    Map<Integer, Integer> findCountCommentsByPostIds(List<Integer> postIds);
 
     void save(CommentToPost comment);
-    void update(CommentToPost comment);
+    void update(Integer id, String content);
 
-    void deleteById(Long id);
+    void deleteById(Integer id);
 }

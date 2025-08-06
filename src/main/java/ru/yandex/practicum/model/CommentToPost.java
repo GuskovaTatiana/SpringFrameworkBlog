@@ -13,16 +13,21 @@ import java.time.LocalDateTime;
 @Getter
 @RequiredArgsConstructor
 public class CommentToPost {
-    private Long id; // идентификатор комментария
-    private Long postId; // идентификатор поста к которому относиться комментарий
+    private Integer id; // идентификатор комментария
+    private Integer postId; // идентификатор поста к которому относиться комментарий
     private String content; // текст комментария
     private Boolean deleted = false; // признак удаления комментария
     private LocalDateTime createdAt; // дата создания
 
 
-    public CommentToPost(long id, String content, LocalDateTime createdAt) {
+    public CommentToPost(Integer id, String content, LocalDateTime createdAt) {
         this.id = id;
         this.content = content;
         this.createdAt = createdAt;
+    }
+
+    public CommentToPost(Integer postId, String content) {
+        this.postId = postId;
+        this.content = content;
     }
 }

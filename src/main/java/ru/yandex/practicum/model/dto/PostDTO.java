@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 @Builder
 public class PostDTO {
-    private Long id; // идентификатор поста
+    private Integer id; // идентификатор поста
     private String title; // название поста
     private String imageUrl; // ссылка на картинку
     private String content; // полный текст поста

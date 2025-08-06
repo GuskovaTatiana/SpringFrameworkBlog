@@ -56,10 +56,10 @@ public class PostService {
         int pageNumber = pageable.getPageNumber();
         long totalPage = postRepository.countTotalPost();
         List<Post> posts = postRepository.findByFilter(pageSize, pageNumber, searchTag);
-        //todo получить мапинг комментариев по списку идентификаторов
-        Map<Long, Integer> commentsCountMap = new HashMap<>();
+        // получение маппинга количество комментариев на пост
+        Map<Integer, Integer> commentsCountMap = new HashMap<>();
         if (!posts.isEmpty()) {
-            List<Long> postIds = posts.stream().map(Post::getId).toList();
+            List<Integer> postIds = posts.stream().map(Post::getId).toList();
             commentsCountMap = commentService.getCountCommentsByPostIds(postIds);
         }
         List<SimplePostDTO> dto = postMapper.toSimpleDto(posts, commentsCountMap);
@@ -99,7 +99,7 @@ public class PostService {
         // записываем на сервере изображение и сохраняем в пост его url
         if (dto.getImage() != null) {
             try{
-                //todo реализовать удаление старого файла
+                //todo реализовать удаление старого файла (может придется переделать сохранение картинки)
                 String urlFile = storeFile(dto.getImage());
                 post.setImageUrl(urlFile);
             } catch (IOException ex) {
