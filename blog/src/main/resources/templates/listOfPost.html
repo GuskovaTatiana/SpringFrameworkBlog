@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Список постов</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <style>
+        #addPostButton {
+            float: right;
+            padding: 10px 20px;
+            background-color: #1a379e;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <table style="width:80%;margin-left:auto;margin-right:auto; margin-top: 25px">
+        <tr>
+            <td>
+                <form th:action="@{/posts(size=${paging.size}, searchTag=${search})}" method="get">
+                    <!-- Поиск -->
+                    <div>
+                        <label for="searchTag">Найти по тегу: </label>
+                        <input id="searchTag" style="width:300px;" name="searchTag" th:value="${search}">
+                        <button name="action">&#128269;</button>
+                    </div>
+                </form>
+            </td>
+            <td>
+                <form method="GET" th:action="@{/posts/add}">
+                    <div>
+                        <button id="addPostButton" style="float:right;">ДОБАВИТЬ ПОСТ</button>
+                    </div>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <!-- Выбор размера страницы -->
+            <td style="width:50%;">
+
+            </td>
+
+            <td style="width:50%;">
+                <!-- Элементы управления пагинацией -->
+                <div th:if="${paging.totalPages > 1}" style="float:left;">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination">
+                            <li class="page-item" th:classappend="${paging.number == 0} ? 'disabled'">
+                                <a class="page-link" th:href="@{/posts(page=${paging.number - 1}, size=${paging.size}, searchTag=${search})}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <label class="page-link" aria-hidden="true" th:text="${paging.number + 1}" style = "color: black; font-weight: bold;"></label>
+                            </li>
+
+                            <li class="page-item" th:classappend="${paging.number == paging.totalPages - 1} ? 'disabled'">
+                                <a class="page-link" th:href="@{/posts(page=${paging.number + 1}, size=${paging.size}, searchTag=${search})}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div style="float:right;">
+                    <form th:action="@{/posts}" method="get" style="float:right;">
+                        <label for="size">Количество: </label>
+                        <select id="size" name="size" onchange="this.form.submit()">
+                            <option value="5" th:selected="${paging.size == 5}">5</option>
+                            <option value="10" th:selected="${paging.size == 10}">10</option>
+                            <option value="20" th:selected="${paging.size == 20}">20</option>
+                            <option value="50" th:selected="${paging.size == 50}">50</option>
+                            <option value="100" th:selected="${paging.size == 100}">100</option>
+                        </select>
+                        <input type="hidden" name="page" th:value="${paging.number}" />
+                    </form>
+                </div>
+
+            </td>
+
+
+        </tr>
+        <tr th:each="post : ${posts}">
+            <td style="border-bottom:thin solid;" colspan="2">
+                <h2 th:text="${post.getTitle()}"></h2>
+                <p>
+                    <a th:href="@{/posts/{id}(id=${post.getId()})}">
+                        <img height="300" th:src="${post.getImageUrl()}">
+                    </a>
+                </p>
+                <p th:text="${post.getExcerpt()}"></p>
+                <p>
+                    <span th:text="${'&#x1F44D; '+post.getLikeCount()}"></span>
+                    <span th:text="${'&#x2709; '+post.getCommentCount()}"></span>
+                </p>
+                <p>
+                    <span th:each="tag : ${post.getTags()}" th:text="${'#'+tag+' '}"></span>
+                </p>
+            </td>
+        </tr>
+    </table>
+</body>

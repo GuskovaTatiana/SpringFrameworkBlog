@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Витрина товаров</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+        }
+
+        table {
+            width: 50%;
+            margin-left: auto;
+            margin-right: auto;
+            border-collapse: collapse; /* Optional: For better table styling */
+        }
+
+        td {
+            padding: 10px;
+        }
+
+        textarea {
+            width: 100%;
+            box-sizing: border-box; /* Ensures padding/border are included in width */
+            margin-bottom: 10px; /* Add some space below textarea */
+            font-family: sans-serif; /* Ensure consistent font */
+            resize: vertical; /* Allows vertical resizing */
+        }
+
+        input[type="file"] {
+            margin-bottom: 10px;
+        }
+
+        button {
+            float: right;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #3e8e41;
+        }
+
+        a {
+            float: right;
+            text-decoration: none; /* Remove underline */
+            color: blue; /* Set a suitable color */
+            margin-bottom: 10px;
+        }
+
+        a b {
+            font-weight: bold;
+        }
+
+        h3 {
+            margin-bottom: 5px; /* Reduce space below heading */
+        }
+    </style>
+</head>
+
+<body>
+<a th:href="@{/posts}" style="float:right;">
+    <b>НА ГЛАВНУЮ &cudarrr;</b>
+</a>
+<form method="POST" th:action="@{/posts/{id}(id=${post != null ? post.getId() : null})}" enctype="multipart/form-data">
+    <table >
+        <tr>
+            <td>
+                <h3>Название</h3>
+                <textarea rows="2"  name="title" th:text="${post==null ? '' : post.getTitle()}"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h3>Изображение</h3>
+                <input type="file" name="image">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h3>Теги</h3>
+                <textarea rows="2" name="tags" th:each="tag : ${(post==null || post.getTags() == null || post.getTags().isEmpty()) ? '' : post.getTags()}" th:text="${ tag == '' ? '' : '#'+tag+' '}"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h3>Текст</h3>
+                <textarea rows="30" name="content" th:text="${post==null ? '' : post.getContent()}"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button th:text="${post==null ? 'Сохранить' : 'Редактировать'}"></button>
+            </td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>
