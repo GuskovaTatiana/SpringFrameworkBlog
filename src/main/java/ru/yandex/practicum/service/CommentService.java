@@ -31,6 +31,14 @@ public class CommentService {
     }
 
     /**
+     * Получение комментария по id
+     * */
+    public CommentToPost findById(Integer id) {
+        CommentToPost comments = commentRepository.findById(id);
+        return comments;
+    }
+
+    /**
      * Сохранение комментария
      * */
     public void save(Integer postId, String commentText) {
@@ -53,6 +61,9 @@ public class CommentService {
         commentRepository.deleteById(id);
     }
 
+    /**
+     * Получение карты количество комментариев по посту
+     */
     public Map<Integer, Integer> getCountCommentsByPostIds(List<Integer> postIds) {
         return commentRepository.findCountCommentsByPostIds(postIds);
     }

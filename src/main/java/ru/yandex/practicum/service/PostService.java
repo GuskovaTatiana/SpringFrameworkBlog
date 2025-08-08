@@ -2,6 +2,7 @@ package ru.yandex.practicum.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -34,7 +35,7 @@ import java.util.UUID;
 @Slf4j
 public class PostService {
     private final CommentService commentService;
-    private final  FileService fileService;
+    private final FileService fileService;
     private final PostRepository postRepository;
     private final PostMapper postMapper;
     private final String regexPattern = "[\\n\\s,./\\\\!@$%^&*()_+=\\-~{}\\[\\]:;\"'<>?|]+";
@@ -45,7 +46,12 @@ public class PostService {
      * */
     public List<SimplePostDTO> findAll() {
         List<Post> posts = postRepository.findAll();
-        return postMapper.toSimpleDto(posts, new HashMap<>());
+        Map<Integer, Integer> commentsCountMap = new HashMap<>();
+        if (!posts.isEmpty()) {
+            List<Integer> postIds = posts.stream().map(Post::getId).toList();
+            commentsCountMap = commentService.getCountCommentsByPostIds(postIds);
+        }
+        return postMapper.toSimpleDto(posts, commentsCountMap);
     }
 
 

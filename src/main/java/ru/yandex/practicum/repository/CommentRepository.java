@@ -8,6 +8,7 @@ import java.util.Map;
 
 public interface CommentRepository {
     List<CommentToPost> findAllByPostId(Integer postId);
+    CommentToPost findById(Integer id);
 
     Map<Integer, Integer> findCountCommentsByPostIds(List<Integer> postIds);
 

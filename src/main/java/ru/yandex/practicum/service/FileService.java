@@ -1,5 +1,6 @@
 package ru.yandex.practicum.service;
 
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,13 +26,18 @@ public class FileService {
      *
      * @throws IOException  Если произошла ошибка при сохранении файла
      */
+    @SneakyThrows
     public String storeFile(MultipartFile file) throws IOException {
         String filename = generateUniqueFilename(file.getOriginalFilename());
         Path uploadPath = Paths.get(imageBaseUrl + uploadDirectory);
 
         // Создаем папку, если она не существует
         if (!Files.exists(uploadPath)) {
-            Files.createDirectories(uploadPath);
+            try {
+                Files.createDirectories(uploadPath);
+            } catch (IOException e) {
+                throw new IOException("Not create Directories " + imageBaseUrl + uploadDirectory, e);
+            }
         }
         Path filePath = Paths.get(imageBaseUrl + uploadDirectory, filename);
 

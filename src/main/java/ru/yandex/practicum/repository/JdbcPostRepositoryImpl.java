@@ -28,7 +28,7 @@ public class JdbcPostRepositoryImpl implements PostRepository {
      * */
     @Override
     public List<Post> findAll() {
-        String sql = "select id, title, image_url, excerpt, like_count, created_at from t_posts where deleted = false";
+        String sql = "select id, title, image_url, excerpt, tp.tags, like_count, created_at from t_posts tp where deleted = false";
         return jdbcTemplate.query(
                 sql,
                 (rs, rowNum) -> {
@@ -112,8 +112,11 @@ public class JdbcPostRepositoryImpl implements PostRepository {
      * */
     @Override
     public void save(Post post) {
+        String sql = """
+                insert into t_posts(title, image_url, tags, excerpt, content) values(?, ?, ?::jsonb, ?, ?);
+                """;
         // Формируем insert-запрос с параметрами
-        jdbcTemplate.update("insert into t_posts(title, image_url, tags, excerpt, content) values(?, ?, ?::jsonb, ?, ?)",
+        jdbcTemplate.update(sql,
                 post.getTitle(), post.getImageUrl(), utils.convertListToJson(post.getTags()), post.getExcerpt(), post.getContent());
     }
 

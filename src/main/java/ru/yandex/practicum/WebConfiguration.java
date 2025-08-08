@@ -6,6 +6,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import ru.yandex.practicum.service.FileService;
 
 @Configuration
 @EnableWebMvc
@@ -17,4 +18,8 @@ public class WebConfiguration {
     public ObjectMapper objectMapper() {
         return new ObjectMapper();
     }
+
+    @Bean
+    public FileService fileService() {
+        return new FileService();}
 }

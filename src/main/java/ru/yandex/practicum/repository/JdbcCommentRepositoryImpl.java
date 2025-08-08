@@ -35,6 +35,27 @@ public class JdbcCommentRepositoryImpl implements CommentRepository{
     }
 
     @Override
+    public CommentToPost findById(Integer id) {
+        CommentToPost comment = new CommentToPost();
+        String sql = """
+                select id, post_id, content, created_at
+                from t_comments_to_post
+                where deleted = false
+                  and id = %s;
+                """;
+        jdbcTemplate.query(
+                String.format(sql, id),
+                rs -> {
+                    comment.setId(rs.getInt("id"));
+                    comment.setPostId(rs.getInt("post_id"));
+                    comment.setContent(rs.getString("content"));
+                    comment.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+                });
+        return comment;
+    }
+
+
+    @Override
     public Map<Integer, Integer> findCountCommentsByPostIds(List<Integer> postIds) {
         String sql = """
                 select post_id, count(id) as count_comment
