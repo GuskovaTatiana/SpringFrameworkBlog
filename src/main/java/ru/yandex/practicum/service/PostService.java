@@ -143,7 +143,7 @@ public class PostService {
     }
 
     /**
-     * Поставить лайк/биздайк посту
+     * Поставить лайк/диздайк посту
      * */
     public PostDTO setLikePostById(Integer id, boolean isLike) {
         Post post = postRepository.findById(id);

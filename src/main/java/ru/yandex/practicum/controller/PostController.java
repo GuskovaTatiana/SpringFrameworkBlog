@@ -47,7 +47,7 @@ public class PostController {
         model.addAttribute("posts", simplePosts.getContent());
         model.addAttribute("paging", simplePosts);
         model.addAttribute("search", searchTag);
-        return "listOfPost"; // Открывает страницу со списком постов
+        return "list-of-post"; // Открывает страницу со списком постов
     }
 
     /**
@@ -75,7 +75,7 @@ public class PostController {
      * */
     @PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String createPost(@ModelAttribute CreatePostDTO createRequest) {
-        if (createRequest.getTitle() != null) {
+        if (createRequest.getTitle() != null && createRequest.getContent() != null) {
             postService.save(createRequest);
 
         }

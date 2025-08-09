@@ -1,5 +1,6 @@
 package ru.yandex.practicum.model.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,6 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
 public class PostDTO {
     private Integer id; // идентификатор поста
     private String title; // название поста

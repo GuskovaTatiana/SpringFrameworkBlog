@@ -4,25 +4,15 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.web.multipart.MultipartFile;
 import ru.yandex.practicum.WebConfiguration;
 import ru.yandex.practicum.config.DataSourceConfiguration;
 import ru.yandex.practicum.model.CommentToPost;
 import ru.yandex.practicum.model.dto.CommentDTO;
-import ru.yandex.practicum.model.dto.CreatePostDTO;
-import ru.yandex.practicum.model.dto.PostDTO;
-import ru.yandex.practicum.model.dto.SimplePostDTO;
-import ru.yandex.practicum.testconfig.TestFileServiceConfig;
 import ru.yandex.practicum.utils.TestUtils;
 
 import java.io.IOException;
@@ -31,8 +21,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.ArgumentMatchers.any;
 
 @SpringJUnitConfig(classes = {DataSourceConfiguration.class, WebConfiguration.class})
 @WebAppConfiguration

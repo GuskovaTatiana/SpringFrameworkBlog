@@ -9,12 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.web.multipart.MultipartFile;
 import ru.yandex.practicum.WebConfiguration;
 import ru.yandex.practicum.config.DataSourceConfiguration;
 import ru.yandex.practicum.model.dto.CreatePostDTO;
@@ -71,6 +69,7 @@ public class PostServiceTest {
         assertEquals("Пост 2", post.getTitle());
         assertEquals(1, post.getCommentCount());
     }
+
     // получение списка постов
     @Test
     void getPosts_shouldReturnListSimplePostsWithoutSearchTagText() {
@@ -105,6 +104,7 @@ public class PostServiceTest {
         assertEquals(2, post.getTags().size());
         assertEquals(2, post.getComments().size());
     }
+
     // удаление поста
     @Test
     void deletePostById_shouldDeactivatePost() {
@@ -154,14 +154,8 @@ public class PostServiceTest {
     @Test
     void createPost_shouldCreatePostWithImage() throws IOException {
         String postTitle = "Новый пост";
-        MultipartFile mockFile = new MockMultipartFile(
-                "file",
-                "test.txt",
-                "text/plain",
-                "This is test content.".getBytes()
-        );
         Mockito.when(fileService.storeFile(any())).thenReturn("/images/test.png");
-        CreatePostDTO createPostDTO = new CreatePostDTO(postTitle, mockFile, "Какой то длинющий текст с символами \n и дополнительным текстом", "#тэг, #новый");
+        CreatePostDTO createPostDTO = new CreatePostDTO(postTitle, testUtils.mockFile, "Какой то длинющий текст с символами \n и дополнительным текстом", "#тэг, #новый");
         postService.save(createPostDTO);
         List<SimplePostDTO> allPosts = postService.findAll();
         List<Integer> postIds = allPosts.stream().filter(it -> it.getTitle().equalsIgnoreCase(createPostDTO.getTitle())).map(SimplePostDTO::getId).toList();
@@ -172,19 +166,14 @@ public class PostServiceTest {
         assertEquals(2, firstCreatedPost.getTags().size());
         assertNotNull(firstCreatedPost.getImageUrl());
     }
+
     // обновление поста
     @Test
     void updatePost_shouldUpdatePostWithImage() throws IOException {
         Integer postId = 1;
-        MultipartFile mockFile = new MockMultipartFile(
-                "file",
-                "test.txt",
-                "text/plain",
-                "This is test content.".getBytes()
-        );
         Mockito.doNothing().when(fileService).deleteFile(any(String.class));
         Mockito.when(fileService.storeFile(any())).thenReturn("/images/test.png");
-        CreatePostDTO createPostDTO = new CreatePostDTO("Обновление поста с id 1", mockFile, "Какой то длинющий текст с символами \n и дополнительным текстом", null);
+        CreatePostDTO createPostDTO = new CreatePostDTO("Обновление поста с id 1", testUtils.mockFile, "Какой то длинющий текст с символами \n и дополнительным текстом", null);
         PostDTO oldPost = postService.getPostById(postId);
         postService.update(postId, createPostDTO);
         PostDTO newPost = postService.getPostById(postId);
@@ -196,7 +185,5 @@ public class PostServiceTest {
         assertNotNull(newPost.getTags());
         assertEquals(oldPost.getTags().size(), newPost.getTags().size());
     }
-    //todo сдлеать мок-костыль для файлов
-
 }
 

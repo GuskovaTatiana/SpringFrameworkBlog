@@ -43,7 +43,7 @@ public class CommentController {
     }
 
     /**
-     * Редактирование комментария к посту
+     * Удаление комментария к посту
      * */
     @PostMapping("/comments/{id}/delete")
     public String deleteComment(@PathVariable int postId,

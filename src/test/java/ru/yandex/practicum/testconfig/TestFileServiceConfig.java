@@ -8,10 +8,7 @@ import static org.mockito.Mockito.mock;
 
 @Configuration
 public class TestFileServiceConfig {
-//    @Bean
-//    public PostService userService(CommentService commentService, FileService fileService, PostRepository postRepository, PostMapper postMapper) {
-//        return new PostService(commentService, fileService, postRepository, postMapper);
-//    }
+
 
     @Bean
     public FileService fileService() {

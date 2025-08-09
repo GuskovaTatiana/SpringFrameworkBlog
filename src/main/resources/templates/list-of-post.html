@@ -2,8 +2,9 @@
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <meta charset="UTF-8" />
     <title>Список постов</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
 
     <style>
         #addPostButton {
@@ -25,7 +26,7 @@
                     <!-- Поиск -->
                     <div>
                         <label for="searchTag">Найти по тегу: </label>
-                        <input id="searchTag" style="width:300px;" name="searchTag" th:value="${search}">
+                        <input id="searchTag" style="width:300px;" name="searchTag" th:value="${search}" />
                         <button name="action">&#128269;</button>
                     </div>
                 </form>
@@ -51,7 +52,7 @@
                         <ul class="pagination">
                             <li class="page-item" th:classappend="${paging.number == 0} ? 'disabled'">
                                 <a class="page-link" th:href="@{/posts(page=${paging.number - 1}, size=${paging.size}, searchTag=${search})}" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
+                                    <span aria-hidden="true">&#171;</span>
                                 </a>
                             </li>
                             <li class="page-item">
@@ -60,7 +61,7 @@
 
                             <li class="page-item" th:classappend="${paging.number == paging.totalPages - 1} ? 'disabled'">
                                 <a class="page-link" th:href="@{/posts(page=${paging.number + 1}, size=${paging.size}, searchTag=${search})}" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
+                                    <span aria-hidden="true">&#187;</span>
                                 </a>
                             </li>
                         </ul>
@@ -89,7 +90,7 @@
                 <h2 th:text="${post.getTitle()}"></h2>
                 <p>
                     <a th:href="@{/posts/{id}(id=${post.getId()})}">
-                        <img height="300" th:src="${post.getImageUrl()}">
+                        <img height="300" th:src="${post.getImageUrl()}" />
                     </a>
                 </p>
                 <p th:text="${post.getExcerpt()}"></p>
@@ -104,3 +105,4 @@
         </tr>
     </table>
 </body>
+</html>

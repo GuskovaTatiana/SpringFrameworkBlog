@@ -2,8 +2,8 @@
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Витрина товаров</title>
     <style>
         body {
@@ -66,7 +66,7 @@
 
 <body>
 <a th:href="@{/posts}" style="float:right;">
-    <b>НА ГЛАВНУЮ &cudarrr;</b>
+    <b>НА ГЛАВНУЮ &#10549;</b>
 </a>
 <form method="POST" th:action="@{/posts/{id}(id=${post != null ? post.getId() : null})}" enctype="multipart/form-data">
     <table >
@@ -79,7 +79,7 @@
         <tr>
             <td>
                 <h3>Изображение</h3>
-                <input type="file" name="image">
+                <input type="file" name="image" />
             </td>
         </tr>
         <tr>
