@@ -1,36 +1,25 @@
 package ru.yandex.practicum.web_blog.controller;
 
-import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import ru.yandex.practicum.web_blog.config.TestConfig;
 import ru.yandex.practicum.web_blog.model.dto.CreatePostDTO;
 import ru.yandex.practicum.web_blog.model.dto.PostDTO;
 
 import ru.yandex.practicum.web_blog.service.PostService;
-
 import ru.yandex.practicum.web_blog.utils.TestUtils;
-
-
-import java.io.IOException;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -44,9 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.xpath;
 
 @AutoConfigureMockMvc
-@DirtiesContext
 @SpringBootTest
-//@ContextConfiguration(classes = {TestConfig.class})
 public class PostControllerTest {
 
     @Autowired
@@ -59,12 +46,9 @@ public class PostControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    //запрос на получение списка постов
     @SneakyThrows
     @Test
     void getListOfPosts_shouldReturnHtmlWithPosts() throws Exception  {
-        //генерируем тестовый вариант ответа
-        //моккаем сервис
         Mockito.when(postService.getPosts(any(), any())).thenReturn(testUtils.getListPost());
         mockMvc.perform(get("/posts"))
                 .andExpect(status().isOk())
