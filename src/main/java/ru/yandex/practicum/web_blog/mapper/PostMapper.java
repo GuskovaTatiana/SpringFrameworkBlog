@@ -46,7 +46,7 @@ public class PostMapper {
 
     public PostDTO toDto(Post post) {
         return new PostDTO(post.getId(), post.getTitle(), post.getImageUrl(), post.getContent()
-                ,post.getTags(), post.getLikeCount());
+                ,post.getTags(), post.getLikeCount(), null);
     }
     public List<SimplePostDTO> toSimpleDto(List<Post> posts, Map<Integer, Integer> mapCommentCount) {
         return posts.stream().map(it -> toSimpleDto(it, mapCommentCount.getOrDefault(it.getId(), 0))).toList();

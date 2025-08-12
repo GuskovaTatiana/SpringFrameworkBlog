@@ -11,28 +11,15 @@ import java.util.List;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class SimplePostDTO {
-    private Integer id; // идентификатор поста
-    private String title; // название поста
-    private String imageUrl; // путь к картинке
-    private String excerpt; // короткое содержание поста
-    private Integer likeCount = 0; // количество лайков на пост
-    private Integer commentCount = 0; // количество комментариев
-    private List<String> tags; // теги к посту
-    private LocalDateTime createdAt; // дата создания
+    private Integer id;
+    private String title;
+    private String imageUrl;
+    private String excerpt;
+    private Integer likeCount = 0;
+    private Integer commentCount = 0;
+    private List<String> tags;
+    private LocalDateTime createdAt;
 
-    public SimplePostDTO(Integer id, String title, String imageUrl, String excerpt, Integer likeCount, List<String> tags, Integer commentCount, LocalDateTime createdAt) {
-    }
-
-    public SimplePostDTO(Integer id, String title, String imageUrl, String excerpt, Integer likeCount, Integer commentCount, List<String> tags, LocalDateTime createdAt) {
-        this.id = id;
-        this.title = title;
-        this.imageUrl = imageUrl;
-        this.excerpt = excerpt;
-        this.likeCount = likeCount;
-        this.commentCount = commentCount;
-        this.tags = tags;
-        this.createdAt = createdAt;
-    }
 }

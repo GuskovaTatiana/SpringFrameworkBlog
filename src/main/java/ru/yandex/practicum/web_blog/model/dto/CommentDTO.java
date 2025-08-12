@@ -12,8 +12,8 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 public class CommentDTO {
-    private Integer id; // идентификатор комментария
-    private String content; // текст комментария
-    private LocalDateTime createdAt; // дата создания
+    private Integer id;
+    private String content;
+    private LocalDateTime createdAt;
 
 }

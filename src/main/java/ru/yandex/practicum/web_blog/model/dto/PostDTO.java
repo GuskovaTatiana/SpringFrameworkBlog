@@ -3,39 +3,24 @@ package ru.yandex.practicum.web_blog.model.dto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
-
+@RequiredArgsConstructor
+@AllArgsConstructor
 public class PostDTO {
-    private Integer id; // идентификатор поста
-    private String title; // название поста
-    private String imageUrl; // ссылка на картинку
-    private String content; // полный текст поста
-    private List<String> tags; // список тегов
-    private Integer likeCount; // количество лайков на пост
-    private List<CommentDTO> comments;
+    private Integer id;
+    private String title;
+    private String imageUrl;
+    private String content;
+    private List<String> tags;
+    private Integer likeCount;
+    private List<CommentDTO> comments = new ArrayList<>();
 
-    public PostDTO(Integer id, String title, String imageUrl, String content, List<String> tags, Integer likeCount) {
-        this.id = id;
-        this.title = title;
-        this.imageUrl = imageUrl;
-        this.content = content;
-        this.tags = tags;
-        this.likeCount = likeCount;
-    }
-
-    public PostDTO(Integer id, String title, String imageUrl, String content, List<String> tags, Integer likeCount, List<CommentDTO> comments) {
-        this.id = id;
-        this.title = title;
-        this.imageUrl = imageUrl;
-        this.content = content;
-        this.tags = tags;
-        this.likeCount = likeCount;
-        this.comments = comments;
-    }
 }
