@@ -11,7 +11,7 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.context.web.WebAppConfiguration;
 import ru.yandex.practicum.WebConfiguration;
 import ru.yandex.practicum.config.DataSourceConfiguration;
-import ru.yandex.practicum.model.CommentToPost;
+import ru.yandex.practicum.model.Comment;
 import ru.yandex.practicum.model.dto.CommentDTO;
 import ru.yandex.practicum.utils.TestUtils;
 
@@ -80,7 +80,7 @@ public class CommentServiceTest {
         List<CommentDTO> oldAllComments = commentService.findAllByPostId(postId);
         CommentDTO updateDto = oldAllComments.get(0);
         commentService.update(updateDto.getId(), commentText);
-        CommentToPost dto = commentService.findById(updateDto.getId());
+        Comment dto = commentService.findById(updateDto.getId());
         assertNotNull(dto);
         assertNotEquals(dto.getContent(), updateDto.getContent());
         assertEquals(commentText, dto.getContent());

@@ -18,28 +18,18 @@ import static java.time.LocalDateTime.now;
 @Getter
 @RequiredArgsConstructor
 public class Post {
-    private Integer id; // идентификатор поста
-    private String title; // название поста
-    private String imageUrl; // ссылка на картинку
-    private String excerpt; // короткое содержание поста
-    private String content = null; // полный текст поста
-    private Boolean deleted = false; // признак удаления поста
-    private List<String> tags; // список тегов
-    private Integer likeCount = 0; // количество лайков на пост
-    private LocalDateTime createdAt; // дата создания
-    private LocalDateTime updatedAt; // дата обновления
+    private Integer id;
+    private String title;
+    private String imageUrl;
+    private String excerpt;
+    private String content = null;
+    private Boolean deleted = false;
+    private List<String> tags;
+    private Integer likeCount = 0;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public Post(int id, String title, String imageUrl, String excerpt, List<String> tags, int likeCount, LocalDateTime createdAt) {
-        this.id = id;
-        this.title = title;
-        this.imageUrl = imageUrl;
-        this.excerpt = excerpt;
-        this.tags = tags;
-        this.likeCount = likeCount;
-        this.createdAt = createdAt;
-    }
-
-    public Post(int id, String title, String imageUrl, String excerpt, String content, List<String> tags, int likeCount) {
         this.id = id;
         this.title = title;
         this.imageUrl = imageUrl;

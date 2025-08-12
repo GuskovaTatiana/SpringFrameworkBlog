@@ -4,14 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.mapper.CommentMapper;
-import ru.yandex.practicum.model.CommentToPost;
-import ru.yandex.practicum.model.Post;
+import ru.yandex.practicum.model.Comment;
 import ru.yandex.practicum.model.dto.CommentDTO;
-import ru.yandex.practicum.model.dto.SimplePostDTO;
 import ru.yandex.practicum.repository.CommentRepository;
-import ru.yandex.practicum.repository.PostRepository;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,15 +22,15 @@ public class CommentService {
      * Получение полного списка комментариев по посту
      * */
     public List<CommentDTO> findAllByPostId(Integer postId) {
-        List<CommentToPost> comments = commentRepository.findAllByPostId(postId);
+        List<Comment> comments = commentRepository.findAllByPostId(postId);
         return commentMapper.toDto(comments);
     }
 
     /**
      * Получение комментария по id
      * */
-    public CommentToPost findById(Integer id) {
-        CommentToPost comments = commentRepository.findById(id);
+    public Comment findById(Integer id) {
+        Comment comments = commentRepository.findById(id);
         return comments;
     }
 
@@ -42,7 +38,7 @@ public class CommentService {
      * Сохранение комментария
      * */
     public void save(Integer postId, String commentText) {
-        CommentToPost comments = new CommentToPost(postId, commentText);
+        Comment comments = new Comment(postId, commentText);
         commentRepository.save(comments);
     }
 

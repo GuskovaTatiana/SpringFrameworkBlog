@@ -3,8 +3,7 @@ package ru.yandex.practicum.repository;
 import lombok.AllArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import ru.yandex.practicum.model.CommentToPost;
-import ru.yandex.practicum.model.Post;
+import ru.yandex.practicum.model.Comment;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +16,7 @@ public class JdbcCommentRepositoryImpl implements CommentRepository{
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public List<CommentToPost> findAllByPostId(Integer postId) {
+    public List<Comment> findAllByPostId(Integer postId) {
         String sql = """
                 select id, content, created_at
                 from t_comments_to_post
@@ -27,7 +26,7 @@ public class JdbcCommentRepositoryImpl implements CommentRepository{
         return jdbcTemplate.query(
                 String.format(sql, postId),
                 (rs, rowNum) -> {
-                    return new CommentToPost(
+                    return new Comment(
                             rs.getInt("id"),
                             rs.getString("content"),
                             rs.getTimestamp("created_at").toLocalDateTime());
@@ -35,8 +34,8 @@ public class JdbcCommentRepositoryImpl implements CommentRepository{
     }
 
     @Override
-    public CommentToPost findById(Integer id) {
-        CommentToPost comment = new CommentToPost();
+    public Comment findById(Integer id) {
+        Comment comment = new Comment();
         String sql = """
                 select id, post_id, content, created_at
                 from t_comments_to_post
@@ -78,7 +77,7 @@ public class JdbcCommentRepositoryImpl implements CommentRepository{
     }
 
     @Override
-    public void save(CommentToPost comment) {
+    public void save(Comment comment) {
         // Формируем insert-запрос с параметрами
         jdbcTemplate.update("insert into t_comments_to_post(post_id, content) values(?, ?)",
                 comment.getPostId(), comment.getContent());
