@@ -14,7 +14,6 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import org.springframework.web.context.WebApplicationContext;
 import ru.yandex.practicum.web_blog.model.dto.CreatePostDTO;
 import ru.yandex.practicum.web_blog.model.dto.PostDTO;
 
@@ -36,8 +35,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 public class PostControllerTest {
 
-    @Autowired
-    private WebApplicationContext webApplicationContext;
     @Autowired
     protected TestUtils testUtils;
     @MockitoBean

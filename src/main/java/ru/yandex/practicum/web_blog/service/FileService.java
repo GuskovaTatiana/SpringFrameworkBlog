@@ -1,6 +1,5 @@
 package ru.yandex.practicum.web_blog.service;
 
-import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,7 +25,6 @@ public class FileService {
      *
      * @throws IOException  Если произошла ошибка при сохранении файла
      */
-    @SneakyThrows
     public String storeFile(MultipartFile file) throws IOException {
         String filename = generateUniqueFilename(file.getOriginalFilename());
         Path uploadPath = Paths.get(imageBaseUrl + uploadDirectory);

@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class CommentServiceTest {
+public class CommentServiceTest extends SpringBootPostgreSQLBase {
 
     @Autowired
     private CommentService commentService;

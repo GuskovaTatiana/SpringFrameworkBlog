@@ -2,15 +2,10 @@ package ru.yandex.practicum.web_blog.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.yandex.practicum.web_blog.model.dto.CreatePostDTO;
 import ru.yandex.practicum.web_blog.model.dto.PostDTO;
 import ru.yandex.practicum.web_blog.model.dto.SimplePostDTO;
@@ -19,16 +14,11 @@ import ru.yandex.practicum.web_blog.model.Post;
 import ru.yandex.practicum.web_blog.repository.PostRepository;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -46,12 +36,13 @@ public class PostService {
      * */
     public List<SimplePostDTO> findAll() {
         List<Post> posts = postRepository.findAll();
+        List<Post> newPosts = posts.stream().filter(it -> !it.getDeleted()).toList();
         Map<Integer, Integer> commentsCountMap = new HashMap<>();
-        if (!posts.isEmpty()) {
-            List<Integer> postIds = posts.stream().map(Post::getId).toList();
+        if (!newPosts.isEmpty()) {
+            List<Integer> postIds = newPosts.stream().map(Post::getId).toList();
             commentsCountMap = commentService.getCountCommentsByPostIds(postIds);
         }
-        return postMapper.toSimpleDto(posts, commentsCountMap);
+        return postMapper.toSimpleDto(newPosts, commentsCountMap);
     }
 
 
@@ -62,7 +53,8 @@ public class PostService {
         int pageSize = pageable.getPageSize();
         int pageNumber = pageable.getPageNumber();
         long totalPage = postRepository.countTotalPost();
-        List<Post> posts = postRepository.findByFilter(pageSize, pageNumber, searchTag);
+        String searchSqlText = searchTag.isEmpty() ? null : searchTag;
+        List<Post> posts = postRepository.findByFilter(pageSize, pageNumber * pageSize, searchSqlText);
         // получение маппинга количество комментариев на пост
         Map<Integer, Integer> commentsCountMap = new HashMap<>();
         if (!posts.isEmpty()) {
@@ -93,6 +85,8 @@ public class PostService {
             String strTags = dto.getTags().replaceAll(regexPattern, "");
             List<String> tags = Arrays.stream(strTags.split("#")).toList();
             newPost.setTags(tags.stream().filter(it -> !it.isEmpty()).toList());
+        } else {
+            newPost.setTags(Collections.emptyList());
         }
         postRepository.save(newPost);
     }
@@ -100,9 +94,9 @@ public class PostService {
     /**
      * обновление поста
      * */
-    public void update(Integer id, CreatePostDTO dto) {
-        Post post = postRepository.findById(id);
-        post = postMapper.toEmpty(post, dto);
+    public void update(Integer id, CreatePostDTO dto){
+        Post post = postRepository.findById(id).orElseThrow(() -> new RuntimeException("Post not found"));
+        postMapper.toEmpty(post, dto);
         // записываем на сервере изображение и сохраняем в пост его url
         if (dto.getImage() != null) {
             try{
@@ -122,14 +116,14 @@ public class PostService {
             List<String> tags = Arrays.stream(strTags.split("#")).toList();
             post.setTags(tags.stream().filter(it -> !it.isEmpty()).toList());
         }
-        postRepository.update(post);
+        postRepository.save(post);
     }
 
     /**
      * Получение полной информации по посту
      * */
     public PostDTO getPostById(Integer id) {
-        Post post = postRepository.findById(id);
+        Post post = postRepository.findById(id).orElseThrow(() -> new RuntimeException("Post not found"));
         PostDTO dto = postMapper.toDto(post);
         dto.setComments(commentService.findAllByPostId(post.getId()));
         return dto;
@@ -139,14 +133,14 @@ public class PostService {
      * Удаление поста
      * */
     public void deletePostById(Integer id) {
-        postRepository.deleteById(id);
+        postRepository.setDeactivateById(id);
     }
 
     /**
      * Поставить лайк/диздайк посту
      * */
     public PostDTO setLikePostById(Integer id, boolean isLike) {
-        Post post = postRepository.findById(id);
+        Post post = postRepository.findById(id).orElseThrow(() -> new RuntimeException("Post not found"));
         if (isLike) {
             post.setLikeCount(post.getLikeCount() + 1);
         } else {
