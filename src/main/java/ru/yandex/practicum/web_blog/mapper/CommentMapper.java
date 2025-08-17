@@ -13,8 +13,6 @@ public class CommentMapper {
                 .id(empty.getId())
                 .content(empty.getContent())
                 .createdAt(empty.getCreatedAt()).build();
-
-
     }
 
     public List<CommentDTO> toDto(List<Comment> listComment) {

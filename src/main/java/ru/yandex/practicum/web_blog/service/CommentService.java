@@ -7,6 +7,7 @@ import ru.yandex.practicum.web_blog.mapper.CommentMapper;
 import ru.yandex.practicum.web_blog.model.Comment;
 import ru.yandex.practicum.web_blog.model.dto.CommentDTO;
 import ru.yandex.practicum.web_blog.repository.CommentRepository;
+import ru.yandex.practicum.web_blog.repository.JdbcCommentRepository;
 
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import java.util.Map;
 @Slf4j
 public class CommentService {
     private final CommentRepository commentRepository;
+    private final JdbcCommentRepository jdbcCommentRepository;
     private final CommentMapper commentMapper;
 
     /**
@@ -30,7 +32,7 @@ public class CommentService {
      * Получение комментария по id
      * */
     public Comment findById(Integer id) {
-        Comment comments = commentRepository.findById(id);
+        Comment comments = commentRepository.findById(id).orElseThrow(() -> new RuntimeException("Comment not found"));
         return comments;
     }
 
@@ -46,22 +48,23 @@ public class CommentService {
      * Обновление комментария
      * */
     public void update(Integer id, String commentText) {
-
-        commentRepository.update(id, commentText);
+        Comment comments = commentRepository.findById(id).orElseThrow(() -> new RuntimeException("Comment not found"));
+        comments.setContent(commentText);
+        commentRepository.save(comments);
     }
 
     /**
      * Удаление комментария
      * */
     public void delete(Integer id) {
-        commentRepository.deleteById(id);
+        commentRepository.setDeactivateById(id);
     }
 
     /**
      * Получение карты количество комментариев по посту
      */
     public Map<Integer, Integer> getCountCommentsByPostIds(List<Integer> postIds) {
-        return commentRepository.findCountCommentsByPostIds(postIds);
+        return jdbcCommentRepository.findCountCommentsByPostIds(postIds);
     }
     ;
 }

@@ -18,6 +18,9 @@ spring:
       minimumIdle: 4
       driverClassName: org.postgresql.Driver
       jdbcUrl: ${spring.datasource.url}
+  jpa:
+    hibernate:
+      ddl-auto: update
 
 images:
   baseUrl: /opt/web-blog

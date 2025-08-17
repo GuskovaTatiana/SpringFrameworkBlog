@@ -1,5 +1,6 @@
 package ru.yandex.practicum.web_blog.mapper;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.web_blog.model.dto.CreatePostDTO;
 import ru.yandex.practicum.web_blog.model.dto.PostDTO;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@AllArgsConstructor
 public class PostMapper {
 
     public Post toEmpty(CreatePostDTO dto) {
@@ -30,7 +32,7 @@ public class PostMapper {
             return null;
         }
         post.setTitle(dto.getTitle() != null ? dto.getTitle() : post.getTitle());
-        String excerpt = dto.getContent() != null ? dto.getContent() : post.getExcerpt();
+        String excerpt = dto.getContent() != null ? dto.getContent().split("\n")[0] : post.getExcerpt();
         post.setExcerpt(excerpt.length() > 256 ? excerpt.substring(0, 255) : excerpt);
         post.setContent(dto.getContent() != null ? dto.getContent() : post.getContent());
         post.setUpdatedAt(LocalDateTime.now());
@@ -38,15 +40,29 @@ public class PostMapper {
     }
 
     public SimplePostDTO toSimpleDto(Post post, Integer commentCount) {
-        return new SimplePostDTO(post.getId(),post.getTitle(), post.getImageUrl(), post.getExcerpt(), post.getLikeCount()
-                ,commentCount, post.getTags(), post.getCreatedAt());
+        return SimplePostDTO.builder()
+                .id(post.getId())
+                .title(post.getTitle())
+                .imageUrl(post.getImageUrl())
+                .excerpt(post.getExcerpt())
+                .likeCount(post.getLikeCount())
+                .tags(post.getTags())
+                .commentCount(commentCount)
+                .createdAt(post.getCreatedAt())
+                .build();
 
     }
 
 
     public PostDTO toDto(Post post) {
-        return new PostDTO(post.getId(), post.getTitle(), post.getImageUrl(), post.getContent()
-                ,post.getTags(), post.getLikeCount(), null);
+        return PostDTO.builder()
+                .id(post.getId())
+                .title(post.getTitle())
+                .imageUrl(post.getImageUrl())
+                .content(post.getContent())
+                .likeCount(post.getLikeCount())
+                .tags(post.getTags())
+                .build();
     }
     public List<SimplePostDTO> toSimpleDto(List<Post> posts, Map<Integer, Integer> mapCommentCount) {
         return posts.stream().map(it -> toSimpleDto(it, mapCommentCount.getOrDefault(it.getId(), 0))).toList();

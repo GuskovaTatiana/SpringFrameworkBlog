@@ -28,7 +28,7 @@ import static org.mockito.ArgumentMatchers.any;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class PostServiceTest {
+public class PostServiceTest extends SpringBootPostgreSQLBase {
 
     @Autowired
     private PostService postService;
@@ -138,7 +138,10 @@ public class PostServiceTest {
         List<SimplePostDTO> allPosts = postService.findAll();
         List<Integer> postIds = allPosts.stream().filter(it -> it.getTitle().equalsIgnoreCase(createPostDTO.getTitle())).map(SimplePostDTO::getId).toList();
         assertNotNull(postIds);
-        PostDTO firstCreatedPost = postService.getPostById(postIds.get(0));
+
+        PostDTO firstCreatedPost = null;
+        firstCreatedPost = postService.getPostById(postIds.get(0));
+
         assertEquals(createPostDTO.getTitle(), firstCreatedPost.getTitle());
         assertEquals(createPostDTO.getContent(), firstCreatedPost.getContent());
         assertEquals(2, firstCreatedPost.getTags().size());
